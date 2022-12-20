@@ -6,152 +6,160 @@ using namespace std;
 class Medecine
 {
 public:
-    string name = "";
-    int price = 0;
-    int quantity = 0;
-    bool isPrescriptionNeeded = 0;
-    int expirationDate = 0; //YYYYMM
+  string name = "";
+  int price = 0;
+  int quantity = 0;
+  bool isPrescriptionNeeded = 0;
+  int expirationDate = 0; //YYYYMM
 
-    void add ();
-    void out();
+  void SetNewMedecine();
+  void OutputMedecine();
 };
 class Pharmacy
 {
+  private:
     int size = 0;
     Medecine* medecine = new Medecine[size]; //асортимент ліків
-    public:
-        void addMed();//додавання ліків 
-        void delMed();//видалення ліків
-        void recalculation();//видалення прострочений ліків
-        void sale();//знижка на всі ліки на 10% 
-        void cheapest();//виведення найдишевших 
-        void outAll();//виведення всіх ліків, які є
-        void del(int i); 
+  public:
+    void AddMedecineToPharmacy();//додавання ліків 
+    void DeleteMedecineFromPharmacy();//видалення ліків
+    void Recalculation();//видалення прострочений ліків
+    void Sale(int discount);//знижка на всі ліки на 10% 
+    void CheapestMedecineInPharmacy();//виведення найдишевших 
+    void OutAllAvailableMedecineInPharmacy();//виведення всіх ліків, які є
+
+    void DeleteMedecine(int i); 
 };
 
 int main(){
-    Pharmacy a;
-    int input;
-    
-    while(1){
-        cout << "addMed (1), delMed (2), recalculation (3), sale (4), cheapest (5), outAll (6)\ninp: ";
-        cin >> input;
-        switch (input)
-        {
-            case 1: a.addMed(); break;
-            case 2: a.delMed(); break;
-            case 3: a.recalculation(); break;
-            case 4: a.sale(); break;
-            case 5: a.cheapest(); break;
-            case 6: a.outAll(); break;
-            default: return 0;
-        }
+  Pharmacy pharmacy;
+  int input;
+  
+  while(1){
+  cout << "addMed (1), delMed (2), recalculation (3), sale (4), cheapest (5), outAll (6)\ninp: ";
+  cin >> input;
+  switch (input)
+    {
+      case 1: pharmacy.AddMedecineToPharmacy(); break;
+      case 2: pharmacy.DeleteMedecineFromPharmacy(); break;
+      case 3: pharmacy.Recalculation(); break;
+      case 4: pharmacy.Sale(10); break;
+      case 5: pharmacy.CheapestMedecineInPharmacy(); break;
+      case 6: pharmacy.OutAllAvailableMedecineInPharmacy(); break;
+      default: return 0;
     }
+  }
 }
-void Medecine::add()
+void Medecine::SetNewMedecine()
 {
-    cout << "Name: ";
-    cin >> name;
-    cout << "Price: ";
-    cin >> price;
-    cout << "Quantity: ";
-    cin >> quantity;
-    cout << "IsPrescriptionNeeded: ";
-    cin >> isPrescriptionNeeded;
-    cout << "expirationDate (YYYYMM):";
-    cin >> expirationDate;
-    cout << "added \n\n";
-}
-void Medecine::out()
-{
-    cout << "Name: ";
-    cout << name << endl;
-    cout << "Price: ";
-    cout << price << endl;
-    cout << "Quantity: ";
-    cout << quantity << endl;
-    cout << "IsPrescriptionNeeded: ";
-    cout << isPrescriptionNeeded << endl;
-    cout << "expirationDate (YYYYMM): ";
-    cout << expirationDate << endl << endl;
+  cout << "Name: ";
+  cin >> name;
+  cout << "Price: ";
+  cin >> price;
+  cout << "Quantity: ";
+  cin >> quantity;
+  cout << "IsPrescriptionNeeded: ";
+  cin >> isPrescriptionNeeded;
+  cout << "expirationDate (YYYYMM):";
+  cin >> expirationDate;
+  cout << "added \n\n";
 }
 
-void Pharmacy::addMed()
+void Medecine::OutputMedecine()
 {
-    size++;
-    Medecine* temp = new Medecine[size];
-    for(int i = 0; i<size-1;i++){
-      temp[i] = medecine[i];
-    }
-    delete[] medecine;
-    medecine = temp;
-    medecine[size-1].add();
+  cout << "Name: ";
+  cout << name << endl;
+  cout << "Price: ";
+  cout << price << endl;
+  cout << "Quantity: ";
+  cout << quantity << endl;
+  cout << "IsPrescriptionNeeded: ";
+  cout << isPrescriptionNeeded << endl;
+  cout << "expirationDate (YYYYMM): ";
+  cout << expirationDate << endl << endl;
 }
-void Pharmacy::delMed()
+
+void Pharmacy::AddMedecineToPharmacy()
 {
-    int i = 0;
-    bool isFound = 0;
-    string name;
-        cout << "find and delete: ";
-        cin >> name;
-    while(i <= size){
-        if (i == size && !isFound){
-            cout << "not found " << name <<endl;
-        }
-        if(medecine[i].name == name){
-            isFound = 1;
-            del(i);
-            cout << "\tdeleted " << name << endl;
-        }
-        i++;
-    }
+  size++;
+  Medecine* temp = new Medecine[size];
+  for(int i = 0; i<size-1;i++){
+    temp[i] = medecine[i];
+  }
+  delete[] medecine;
+  medecine = temp;
+  medecine[size-1].SetNewMedecine();
 }
-void Pharmacy::recalculation()
+
+void Pharmacy::DeleteMedecineFromPharmacy()
 {
-    int i = 0;
-    cout << "Recalculation:" << endl;
-    while(i <= size){
-        if(medecine[i].expirationDate <= DATE){
-            cout << "\tdeleted " << medecine[i].name << endl;   
-            del(i);
-        }
-        i++;
+  int i = 0;
+  bool isFound = 0;
+  string name;
+    cout << "find and delete: ";
+    cin >> name;
+  while(i <= size){
+    if (i == size && !isFound){
+      cout << "not found " << name <<endl;
     }
-}
-void Pharmacy::sale()
-{
-    int i = 0;
-    while(i < size){
-        medecine[i].price *= 0.9;
-        i++;
+    if(medecine[i].name == name){
+      isFound = 1;
+      DeleteMedecine(i);
+      cout << "\tdeleted " << name << endl;
     }
+    i++;
+  }
 }
-void Pharmacy::outAll()
+void Pharmacy::Recalculation()
 {
-    int i = 0;
-    cout << "\nHere: " << endl;
-    while(i < size){
-        medecine[i].out();
-        i ++;
+  int i = 0;
+  cout << "Recalculation:" << endl;
+  while(i <= size){
+    if(medecine[i].expirationDate <= DATE){
+      cout << "\tdeleted " << medecine[i].name << endl;   
+      DeleteMedecine(i);
     }
+    i++;
+  }
 }
-void Pharmacy::cheapest()
+
+void Pharmacy::Sale(int discount)
 {
-   int min = medecine[0].price;
-   for(int i = 1;i < size; i++){
-     if(min > medecine[i].price){
+  int i = 0;
+  while(i < size){
+    medecine[i].price *= (1-(100.0/discount));
+    i++;
+  }
+}
+
+void Pharmacy::OutAllAvailableMedecineInPharmacy()
+{
+  int i = 0;
+  cout << "\nHere: " << endl;
+  while(i < size){
+    medecine[i].OutputMedecine();
+    i ++;
+  }
+}
+
+void Pharmacy::CheapestMedecineInPharmacy()
+{
+  int min = medecine[0].price;
+  for(int i = 1;i < size; i++){
+    if(min > medecine[i].price){
       min = medecine[i].price;
       cout << min << endl;
     }
-   }
-   for(int i =0;i<size;i++){
-     if(medecine[i].price == min)
-      medecine[i].out();
-    }
+  }
+  for(int i =0;i<size;i++){
+    if(medecine[i].price == min)
+      medecine[i].OutputMedecine();
+  }
 }
-void Pharmacy::del(int i){
-    size --;
-    for(int j = i; j<size; j++){
-        medecine[j] = medecine[j + 1];
-    }
+
+void Pharmacy::DeleteMedecine(int i){
+  size --;
+  for(int j = i; j<size; j++){
+    medecine[j] = medecine[j + 1];
+  }
  }
