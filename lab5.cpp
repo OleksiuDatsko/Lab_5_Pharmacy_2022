@@ -6,28 +6,27 @@ using namespace std;
 class Medecine
 {
 public:
-    string name_ = "";
-    int price_ = 0;
-    int quantity_ = 0;
-    bool is_prescription_needed_ = 0;
-    int expiration_date_ = 0; //YYYYMM
+    string name = "";
+    int price = 0;
+    int quantity = 0;
+    bool isPrescriptionNeeded = 0;
+    int expirationDate = 0; //YYYYMM
 
-    void AddNewMedecine();
-    void OutputMedecine();
+    void add ();
+    void out();
 };
 class Pharmacy
 {
-    private:
-        int size_ = 0;
-        Medecine* medecine_ = new Medecine[size_]; //асортимент ліків
+    int size = 0;
+    Medecine* medecine = new Medecine[size]; //асортимент ліків
     public:
-        void AddMedecineToPharmacy();//додавання ліків 
-        void DeleteMedecineFromPharmacyByName();//видалення ліків
-        void Recalculation();//видалення прострочений ліків
-        void Sale(int discount);//знижка на всі ліки на 10% 
-        void OutCheapestMedecineInPharmacy();//виведення найдишевших 
-        void OutAllAvalibleNMedecineInPharmacy();//виведення всіх ліків, які є
-        void DeleteMedecine(int i); 
+        void addMed();//додавання ліків 
+        void delMed();//видалення ліків
+        void recalculation();//видалення прострочений ліків
+        void sale();//знижка на всі ліки на 10% 
+        void cheapest();//виведення найдишевших 
+        void outAll();//виведення всіх ліків, які є
+        void del(int i); 
 };
 
 int main(){
@@ -39,120 +38,120 @@ int main(){
         cin >> input;
         switch (input)
         {
-            case 1: a.AddMedecineToPharmacy(); break;
-            case 2: a.DeleteMedecineFromPharmacyByName(); break;
-            case 3: a.Recalculation(); break;
-            case 4: a.Sale(10); break;
-            case 5: a.OutCheapestMedecineInPharmacy(); break;
-            case 6: a.OutAllAvalibleNMedecineInPharmacy(); break;
+            case 1: a.addMed(); break;
+            case 2: a.delMed(); break;
+            case 3: a.recalculation(); break;
+            case 4: a.sale(); break;
+            case 5: a.cheapest(); break;
+            case 6: a.outAll(); break;
             default: return 0;
         }
     }
 }
-void Medecine::AddNewMedecine()
+void Medecine::add()
 {
     cout << "Name: ";
-    cin >> name_;
+    cin >> name;
     cout << "Price: ";
-    cin >> price_;
+    cin >> price;
     cout << "Quantity: ";
-    cin >> quantity_;
-    cout << "is_prescription_needed: ";
-    cin >> is_prescription_needed_;
+    cin >> quantity;
+    cout << "IsPrescriptionNeeded: ";
+    cin >> isPrescriptionNeeded;
     cout << "expirationDate (YYYYMM):";
-    cin >> expiration_date_;
+    cin >> expirationDate;
     cout << "added \n\n";
 }
-void Medecine::OutputMedecine()
+void Medecine::out()
 {
     cout << "Name: ";
-    cout << name_ << endl;
+    cout << name << endl;
     cout << "Price: ";
-    cout << price_ << endl;
+    cout << price << endl;
     cout << "Quantity: ";
-    cout << quantity_ << endl;
-    cout << "Is_prescription_needed: ";
-    cout << is_prescription_needed_ << endl;
+    cout << quantity << endl;
+    cout << "IsPrescriptionNeeded: ";
+    cout << isPrescriptionNeeded << endl;
     cout << "expirationDate (YYYYMM): ";
-    cout << expiration_date_ << endl << endl;
+    cout << expirationDate << endl << endl;
 }
 
-void Pharmacy::AddMedecineToPharmacy()
+void Pharmacy::addMed()
 {
-    size_++;
-    Medecine* temp = new Medecine[size_];
-    for(int i = 0; i<size_-1;i++){
-      temp[i] = medecine_[i];
+    size++;
+    Medecine* temp = new Medecine[size];
+    for(int i = 0; i<size-1;i++){
+      temp[i] = medecine[i];
     }
-    delete[] medecine_;
-    medecine_ = temp;
-    medecine_[size_-1].AddNewMedecine();
+    delete[] medecine;
+    medecine = temp;
+    medecine[size-1].add();
 }
-void Pharmacy::DeleteMedecineFromPharmacyByName()
+void Pharmacy::delMed()
 {
     int i = 0;
     bool isFound = 0;
     string name;
         cout << "find and delete: ";
         cin >> name;
-    while(i <= size_){
-        if (i == size_ && !isFound){
+    while(i <= size){
+        if (i == size && !isFound){
             cout << "not found " << name <<endl;
         }
-        if(medecine_[i].name_ == name){
+        if(medecine[i].name == name){
             isFound = 1;
-            DeleteMedecine(i);
+            del(i);
             cout << "\tdeleted " << name << endl;
         }
         i++;
     }
 }
-void Pharmacy::Recalculation()
+void Pharmacy::recalculation()
 {
     int i = 0;
     cout << "Recalculation:" << endl;
-    while(i <= size_){
-        if(medecine_[i].expiration_date_ <= DATE){
-            cout << "\tdeleted " << medecine_[i].name_ << endl;   
-            DeleteMedecine(i);
+    while(i <= size){
+        if(medecine[i].expirationDate <= DATE){
+            cout << "\tdeleted " << medecine[i].name << endl;   
+            del(i);
         }
         i++;
     }
 }
-void Pharmacy::Sale(int discount)
+void Pharmacy::sale()
 {
     int i = 0;
-    while(i < size_){
-        medecine_[i].price_ *= (1.0-(discount/100.0));
+    while(i < size){
+        medecine[i].price *= 0.9;
         i++;
     }
 }
-void Pharmacy::OutAllAvalibleNMedecineInPharmacy()
+void Pharmacy::outAll()
 {
     int i = 0;
     cout << "\nHere: " << endl;
-    while(i < size_){
-        medecine_[i].OutputMedecine();
+    while(i < size){
+        medecine[i].out();
         i ++;
     }
 }
-void Pharmacy::OutCheapestMedecineInPharmacy()
+void Pharmacy::cheapest()
 {
-   int min = medecine_[0].price_;
-   for(int i = 1;i < size_; i++){
-     if(min > medecine_[i].price_){
-      min = medecine_[i].price_;
+   int min = medecine[0].price;
+   for(int i = 1;i < size; i++){
+     if(min > medecine[i].price){
+      min = medecine[i].price;
       cout << min << endl;
     }
    }
-   for(int i =0;i<size_;i++){
-     if(medecine_[i].price_ == min)
-      medecine_[i].OutputMedecine();
+   for(int i =0;i<size;i++){
+     if(medecine[i].price == min)
+      medecine[i].out();
     }
 }
-void Pharmacy::DeleteMedecine(int i){
-    size_ --;
-    for(int j = i; j<size_; j++){
-        medecine_[j] = medecine_[j + 1];
+void Pharmacy::del(int i){
+    size --;
+    for(int j = i; j<size; j++){
+        medecine[j] = medecine[j + 1];
     }
  }
